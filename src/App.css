@@ -1,0 +1,109 @@
+.App {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.App-header {
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.App-header h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.App-header p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+section {
+  background: white;
+  color: #333;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+  color: #667eea;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 1rem;
+}
+
+.success {
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.health-info p {
+  margin: 0.5rem 0;
+}
+
+button {
+  background-color: #667eea;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #764ba2;
+}
+
+.api-response {
+  background-color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.api-response pre {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.features li {
+  background-color: #f0f4ff;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #667eea;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}
