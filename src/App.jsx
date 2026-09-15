@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { checkHealth, getAirQuality, searchPlaces, searchFlights, searchEvents } from './api/client';
-import LoginPage from './pages/LoginPage';
-import Dashboard from './pages/Dashboard';
+import { checkHealth, getAirQuality } from './api/client';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
   const [health, setHealth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [airQuality, setAirQuality] = useState(null);
 
   useEffect(() => {
-    // Check backend health on mount
+    // Check backend health
     checkHealth()
       .then(response => {
         setHealth(response.data);
@@ -23,54 +20,68 @@ function App() {
         console.error('❌ Backend error:', err.message);
       })
       .finally(() => setLoading(false));
-
-    // Check for existing session
-    const storedUser = localStorage.getItem('travelosUser');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-        setIsAuthenticated(true);
-      } catch (e) {
-        localStorage.removeItem('travelosUser');
-      }
-    }
   }, []);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-    setIsAuthenticated(true);
-    localStorage.setItem('travelosUser', JSON.stringify(userData));
+  const handleAirQuality = async () => {
+    try {
+      const response = await getAirQuality(40.7128, -74.0060);
+      setAirQuality(response.data);
+      console.log('Air Quality Data:', response.data);
+    } catch (err) {
+      console.error('Air quality error:', err);
+    }
   };
-
-  const handleLogout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('travelosUser');
-  };
-
-  if (!isAuthenticated) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <div className="header-content">
-          <h1>🌍 TravelOS</h1>
-          <p>Your entire trip. One intelligent app.</p>
-        </div>
-        <div className="user-menu">
-          <span className="user-name">Welcome, {user.name || 'Traveler'}</span>
-          <button onClick={handleLogout} className="logout-btn">Logout</button>
-        </div>
+        <h1>🌍 TravelOS</h1>
+        <p>Your entire trip. One intelligent app.</p>
       </header>
 
       <main className="content">
-        <Dashboard health={health} loading={loading} error={error} />
+        <section className="status">
+          <h2>Backend Status</h2>
+          {loading && <p>Checking backend connection...</p>}
+          {error && <p className="error">❌ {error}</p>}
+          {health && (
+            <div className="health-info">
+              <p className="success">✅ Backend Connected</p>
+              <p>Status: {health.status}</p>
+              <p>Time: {new Date(health.timestamp).toLocaleString()}</p>
+            </div>
+          )}
+        </section>
+
+        <section className="api-test">
+          <h2>API Testing</h2>
+          <button onClick={handleAirQuality}>
+            Test Air Quality API (NYC)
+          </button>
+          {airQuality && (
+            <div className="api-response">
+              <pre>{JSON.stringify(airQuality, null, 2)}</pre>
+            </div>
+          )}
+        </section>
+
+        <section className="features">
+          <h2>Available Features</h2>
+          <ul>
+            <li>✈️ Flight Search & Booking</li>
+            <li>🏨 Hotel & Accommodation Finder</li>
+            <li>🍽️ Restaurant & Dining Discovery</li>
+            <li>🎫 Event & Activity Planning</li>
+            <li>💰 Expense Tracking</li>
+            <li>📍 Smart Itinerary Management</li>
+            <li>🌡️ Weather & Air Quality</li>
+            <li>🗺️ Maps & Directions</li>
+          </ul>
+        </section>
       </main>
 
       <footer>
-        <p>TravelOS • Intelligent Trip Planning • Backend on port 3000</p>
+        <p>TravelOS • Backend on port 3000 • React Frontend</p>
       </footer>
     </div>
   );
