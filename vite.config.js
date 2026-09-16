@@ -8,3 +8,4 @@ export default defineConfig({
     host: true
   }
 })
+// CI/CD Pipeline Test - Vercel Environment Variables Deployment
